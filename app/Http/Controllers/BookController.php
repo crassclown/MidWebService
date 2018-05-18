@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Category;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -27,7 +28,22 @@ class BookController extends Controller
         return response()->json(Book::find($id));
     }
 
-    public function create(Request $request)
+    public function create(Request $request, $id)
+    {
+        $Book = new Book;
+
+        $Book->title= $request->title;
+        $Book->description= $request->description;
+        $Book->writer= $request->writer;
+        $Book->publisher= $request->publisher;
+        $Book->category_id= Request::segment(3);
+
+        $Book->save();
+
+        return response()->json($Book, 201);
+    }
+
+    public function store(Request $request)
     {
         $Book = Book::create($request->all());
 
